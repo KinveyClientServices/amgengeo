@@ -1,0 +1,32 @@
+<ion-view view-title="Passengers">
+    <ion-nav-bar class="bar-harley" title="Prospects">
+
+        <ion-nav-buttons side="left">
+          <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()"></button>
+          <h1 class="title">Prospects</h1>
+        </ion-nav-buttons>
+
+    </ion-nav-bar>
+     <!--<ion-refresher
+    pulling-text="Pull to refresh..."
+    on-refresh="doRefresh()">
+  </ion-refresher>-->
+      <ion-content class="has-header padding">
+
+  
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="passenger in passengers" type="item-text-wrap">
+        <h2>{{passenger.Name}}</h2>
+    <p>{{passenger.Seat}}</p>
+        <i class="icon {{passenger.status_icon}} icon-accessory {{passenger.icon_color}}" style="color:{{passenger.icon_color}}"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <ion-footer-bar align-title="left" class="bar-stable">
+  <div class="buttons">
+    <button class="button" ng-click="doRefresh();">Refresh</button>
+  </div>
+  
+  </div>
+</ion-footer-bar>
+</ion-view>

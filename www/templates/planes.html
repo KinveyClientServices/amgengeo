@@ -1,0 +1,15 @@
+<ion-view cache-view="false" view-title="Planes">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-leftitem-icon-right" ng-repeat="plane in planes" type="item-text-wrap">
+      <center><img ng-src="{{plane.planeimg}}" width="160">
+        <h2><b>{{plane.name}}</b></h2>
+        <p style="white-space:normal">{{plane.capacity}}</p>
+        <p style="white-space:normal">{{plane.speed}}</p></center>
+        <!--<p style="white-space:normal">{{plane.capacity}}</p></center>
+        <p style="white-space:normal">{{plane.capacity}}</p></center>-->
+       
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

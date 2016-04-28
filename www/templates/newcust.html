@@ -1,6 +1,6 @@
 <ion-view title="LET'S KEEP IN TOUCH">
     
-            <ion-nav-bar class="bar-acme" title="Hello">
+            <ion-nav-bar class="bar-harley" title="Hello">
 
         <ion-nav-buttons side="left">
           <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()"></button>
@@ -15,8 +15,8 @@
 
  <div class="list card">
 
-  <div class="item item-avatar item-text-wrap">
-    <img src="img/contacts-icon.png">
+  <div class="item item-thumbnail-left item-text-wrap">
+    <img src="img/harley.jpg">
     <h2>New Potential Customer</h2>
     <p>Schedule a meeting to discuss your insurance needs</p>
   </div>
@@ -32,27 +32,22 @@
 
 
   <label class="item item-input">
-    <input type="text" placeholder="First Name, Last Name" id="custname">
+    <input type="text" placeholder="First Name Last Name" id="custname">
   </label>
   <label class="item item-input">
-    <input type="text" placeholder="Company Name" id="companyname">
+    <input type="text" placeholder="Motorcycle" id="motorcycle">
   </label>
   
   <label class="item item-input">
-    <input type="text" placeholder="Cell" id="cell">
+    <input type="text" placeholder="Stickerprice" id="sticker">
   </label>
-  <label class="item item-input">
-    <input type="text" placeholder="Email" id="email">
-  </label>
-  <label class="item item-input">
-    <input type="text" placeholder="Address" id="addr1">
-  </label>
-  <!--<label class="item item-input">
-    <input type="text" placeholder="Apt/Suite" id="addr2">
-  </label>-->
-  <label class="item item-input">
-    <input type="text" placeholder="Zip" id="zip">
-  </label>
+  <li class="item item-checkbox bar-energized">
+     <label class="checkbox">
+       <input type="checkbox" id="testdrive">
+     </label>
+     Test Drive
+  </li>
+
    <label class="item-select">
   <select>
       <option>Ohio</option>
@@ -61,7 +56,7 @@
       <option>Virginia</option>
       <option>West Virginia</option>
     </select></label></div>
-    <a class="button button-small bar-generac acmebutton" ng-click="insertme();">save</a>
+    <a class="button button-small bar-generac harleybutton" ng-click="insertme();">save</a>
 </div>
   </ion-content>
 

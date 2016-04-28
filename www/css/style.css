@@ -8,6 +8,84 @@
 	color: #0088c2 !important;
 }
 
+.bar-harley {
+   background-color: #2162a5 !important;
+   color: #2162a5;   
+}
+
+.harley-text {
+   color: #005daa !important;
+}
+
+.u-1k {
+   color: #FFD700 !important;
+}
+
+.u-gold {
+   color: #9e7e2d !important;
+}
+
+.u-platinum {
+   color: #E5E4E2 !important;
+}
+
+.u-silver {
+   color: #C0C0C0 !important;
+}
+
+.u-blue {
+   color: #0000ff !important;
+}
+
+.u-warn {
+   color: #ff0000 !important;
+}
+
+.angular-google-map-container { 
+  height: 100%; 
+}
+
+#mymap {
+    width: 320px;
+    height: 500px;
+}
+
+
+.harleybutton {
+   border-top: 1px solid #000000;
+   background: #ff6600;
+   /*background: -webkit-gradient(linear, left top, left bottom, from(#333333), to(#0088c2));
+   background: -webkit-linear-gradient(top, #333333, #0088c2);
+   background: -moz-linear-gradient(top, #333333, #0088c2);
+   background: -ms-linear-gradient(top, #333333, #0088c2);
+   background: -o-linear-gradient(top, #333333, #0088c2);*/
+   padding: 9px 18px;
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: #ffffff;
+   font-size: 14px;
+   font-family: "HelveticaNeueBlack", "HelveticaNeue-Black", "Helvetica Neue Black", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosBold', "Arial Black", sans-serif; font-weight:800; font-stretch:normal; 
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.harleybutton:hover {
+   border-top-color: #333333;
+   background: #ff6600;
+   color: #000000;
+   }
+.harleybutton:active {
+   border-top-color: #1b435e;
+   background: #ff6600;
+   color: #000000;
+   }
+
+
+
 
 .acmebutton {
    border-top: 1px solid #000000;

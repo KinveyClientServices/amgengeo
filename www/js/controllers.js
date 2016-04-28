@@ -10,15 +10,31 @@ angular.module('starter.controllers', ['kinvey'])
 
 })
 
-.controller('ChatsCtrl', function($scope, $kinvey) {
-    $kinvey.DataStore.find('chats').then(function(chats) {
-        $scope.chats = chats;
-    });
-    $scope.remove = function(chatId) {
-        $kinvey.DataStore.destroy('chats', chatId).then(function() {
-            console.log("chat deleted: " + chatId);
+.controller('PlacesCtrl', function($kinvey, $scope, $rootScope) {
+
+   console.log('places ctrl');
+
+   $scope.doRefresh = function() {
+        console.log( $rootScope.current_loc);
+        console.log( document.getElementById("myrange").value);
+        console.log( document.getElementById("myinterest").value);
+
+        var distance = parseInt(document.getElementById('myrange').value);
+        console.log( distance );
+
+        var myzone = [$rootScope.current_loc[1], $rootScope.current_loc[0]];
+
+        var query = new Kinvey.Query();
+        query.equalTo('keyword', document.getElementById("myinterest").value).near('_geoloc', myzone, distance);
+        console.log(query);
+        //query.near('_geoloc', $rootScope.current_loc, document.getElementById("myrange"));
+        $kinvey.DataStore.find('places', query).then(function(places) {
+            console.log(places);
+            $scope.places = places;
         });
-    }
+
+   }
+
 })
 
 
@@ -26,13 +42,10 @@ angular.module('starter.controllers', ['kinvey'])
 
     $scope.$on('$ionicView.beforeEnter', function() {
         console.log('load search view');
-        var user = Kinvey.getActiveUser();
-        var query = new Kinvey.Query();
-        query.equalTo('userOwner', user.email);
-        console.log(user.email);
-        $kinvey.DataStore.find('companies', query).then(function(companies) {
-            console.log(companies);
-            $scope.companies = companies;
+        $scope.showme = false;
+        $kinvey.DataStore.find('planes').then(function(planes) {
+            console.log(planes);
+            $scope.planes = planes;
         });
     });
 
@@ -40,13 +53,14 @@ angular.module('starter.controllers', ['kinvey'])
     $scope.searchme = function() {
         console.log('inside searchctrl');
 
-        console.log(document.getElementById("chosenCompany").value);
+        console.log(document.getElementById("chosenPlane").value);
 
         var query = new Kinvey.Query();
-        query.equalTo('companyname', document.getElementById("chosenCompany").value);
-        $kinvey.DataStore.find('companies', query).then(function(accountlist) {
-            console.log(accountlist);
-            $scope.accountlist = accountlist;
+        query.equalTo('name', document.getElementById("chosenPlane").value);
+        $kinvey.DataStore.find('planes', query).then(function(thisplane) {
+            console.log(thisplane);
+            $scope.thisplane = thisplane[0];
+            $scope.showme = true;
         });
     };
 })
@@ -57,36 +71,45 @@ angular.module('starter.controllers', ['kinvey'])
         document.getElementById("custname").value = "";
         console.log(mycname);
 
-        var mycompanyname = document.getElementById("companyname").value;
-        console.log(mycompanyname);
-        document.getElementById("companyname").value = "";
+        var motorcycle = document.getElementById("motorcycle").value;
+        console.log(motorcycle);
+        document.getElementById("motorcycle").value = "";
 
-        var mycell = document.getElementById("cell").value;
-        document.getElementById("cell").value = "";
-        var myemail = document.getElementById("email").value;
-        document.getElementById("email").value = "";
-        var myaddr1 = document.getElementById("addr1").value;
-        document.getElementById("addr1").value = "";
-        var myzip = document.getElementById("zip").value;
-        document.getElementById("zip").value = "";
+        var sticker = document.getElementById("sticker").value;
+        console.log(sticker);
+        document.getElementById("sticker").value = "";
+
+        var testdrive = document.getElementById("testdrive").checked;
+        console.log(testdrive);
+        //document.getElementById("testdrive").value = false;
+
+        var mytestdrive = true;
+        if (testdrive == "on") {
+            mytestdrive = true;
+        } else {
+            mytestdrive = false;
+        }
+
 
         var data = {};
 
-        data.contactname = mycname;
-        data.companyname = mycompanyname;
-        data.cell = mycell;
-        data.email = myemail;
-        data.addr1 = myaddr1;
+        data.Name = mycname;
+        data.Motorcycle__c = motorcycle;
+        data.TestRide__c = testdrive;
+        data.Motorcycle_Cost__c = sticker;
+        data.CloseDate = "2012-05-14T20:21:00Z";
+        data.AccountId = "00161000002foreAAA";
+        data.StageName = "Prospect";
 
-        data.zip = myzip;
-        console.log(mycname + ' ' + mycompanyname);
+        console.log(JSON.stringify(data));
 
-        $kinvey.DataStore.save('contacts', data).then(function(data) {
+
+        $kinvey.DataStore.save('opportunities', data).then(function(data) {
             console.log(data);
         });
 
         $ionicLoading.show({
-            template: 'contact inserted',
+            template: 'prospect inserted',
             noBackdrop: true,
             duration: 2000
         });
@@ -152,6 +175,7 @@ angular.module('starter.controllers', ['kinvey'])
         data.html_body = "<html>Dear " + sendtoname + ":<br><br>We notice that you are past due for a coverage review.  Did you know that over half of all coverage reviews end up saving the customer money?  Contact your agent today for a comprehensive look at your coverage.<br><img src='http://www.lexpage.com/images/inscard2.jpg'></html>";
         data.reply_to = "coveragereviw@acmeinsurance.com";
 
+
         console.log(myemail);
         //Kinvey.DataStore.save('books', data);
         $kinvey.DataStore.save('email', data).then(function(data) {
@@ -168,54 +192,227 @@ angular.module('starter.controllers', ['kinvey'])
 
 
 
-.controller('CompanyCtrl', function($scope, $kinvey) {
+.controller('PlaneCtrl', function($scope, $kinvey) {
 
     $scope.$on('$ionicView.beforeEnter', function() {
         console.log('load view');
 
-        console.log('inside companyctrl');
-        var user = Kinvey.getActiveUser();
-        var query = new Kinvey.Query();
-        query.equalTo('userOwner', user.email);
-        console.log(user.email);
-        $kinvey.DataStore.find('companies', query).then(function(companies) {
-            console.log(companies);
-            $scope.companies = companies;
+        console.log('inside planectrl');
+        //var user = Kinvey.getActiveUser();
+        //console.log(user);
+        //var query = new Kinvey.Query();
+        //query.equalTo('userOwner', user.email);
+        //console.log(user.email);
+        $kinvey.DataStore.find('planes').then(function(planes) {
+            console.log(planes);
+            $scope.planes = planes;
         });
     });
 })
 
 
 
-.controller('PartnerCtrl', function($scope, $kinvey) {
+.controller('PassengerCtrl', function($scope, $kinvey) {
 
-   $scope.doRefresh = function() {
-     console.log('refresh');
-     $kinvey.DataStore.find('partner').then(function(partners) {
-            console.log(partners);
-            $scope.partners = partners;
+    $scope.doRefresh = function() {
+        console.log('refresh');
+        $kinvey.DataStore.find('passengers').then(function(passengers) {
+            console.log(passengers);
+            if (passengers[0].records == null) {
+                console.log('passengers.records is null');
+            } else {
+                passengers = passengers[0].records;
+                console.log('it is not null');
+            }
+            $scope.passengers = passengers;
         });
-      }
+    }
 
     $scope.$on('$ionicView.beforeEnter', function() {
-        console.log('partner load view');
-        $kinvey.DataStore.find('partner').then(function(partners) {
-            console.log(partners);
-            $scope.partners = partners;
+        console.log('passenger load view');
+        var query = new Kinvey.Query();
+        query.ascending('Seat');
+        $kinvey.DataStore.find('passengers', query).then(function(passengers) {
+            if (passengers[0].records == null) {
+                console.log('passengers.records is null');
+            } else {
+                passengers = passengers[0].records;
+                console.log('it is not null');
+            }
+            console.log(passengers);
+            $scope.passengers = passengers;
         });
     });
-    
+
 })
+
+.controller('MapCtrl', function($scope, $kinvey, $rootScope) {
+
+var gmarkers = [];
+
+    $scope.doRefresh = function() {
+        //check to see if a range has been specified
+        if (document.getElementById("myrange").value == "") {
+            console.log('no range');
+            $kinvey.DataStore.find('geo').then(function(locations) {
+                console.log(locations);
+                for (var i = 0; i < locations.length; i++) {
+                    var mylat = parseInt(locations[i]._geoloc[0]);
+                    var mylong = parseInt(locations[i]._geoloc[1]);
+                    console.log(mylat + ", " + mylong);
+                    console.log(locations[i].company.name);
+                    var info = new google.maps.InfoWindow({
+                        content: '<b>Who:</b> ' + locations[i].name + '<br><b>Notes:</b> ' + locations[i].company.name
+                    });
+
+                    
+                    var mapOptions = {
+                        
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+
+                    var myLatlng = new google.maps.LatLng(mylat, mylong);
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: $rootScope.map,
+                        title: locations[i].name
+                    });
+                    gmarkers.push(marker);
+                    google.maps.event.addListener(marker, 'click', (function(info) {
+                        return function() {
+                            info.open($rootScope.map, this);
+                        }
+                    })(info));
+
+                }
+
+            });
+        } else {
+            console.log('range specified');
+            console.log( 'gmarker len = ' + gmarkers.length );
+            console.log( $rootScope.current_loc );
+
+            var myrange = document.getElementById("myrange").value;
+            
+                console.log('getting position');
+                
+                // Query for buildings close by.
+                var query = new $kinvey.Query();
+                query.near('_geoloc', $rootScope.current_loc, myrange);
+                var promise = $kinvey.DataStore.find('geo', query);
+                promise.then(function(models) {
+
+                    console.log('num markers = ' + models.length);
+                    for (i = 0; i < gmarkers.length; i++) {
+                        console.log( 'clearing marker...');
+                        gmarkers[i].setMap(null);
+                    }
+
+
+                    for (var i = 0; i < models.length; i++) {
+                        var mylat = parseInt(models[i]._geoloc[0]);
+                        var mylong = parseInt(models[i]._geoloc[1]);
+                        console.log(mylat + ", " + mylong);
+                        console.log(models[i].company.name);
+                        var info = new google.maps.InfoWindow({
+                            content: '<b>Who:</b> ' + models[i].name + '<br><b>Notes:</b> ' + models[i].company.name
+                        });
+
+                        var mapOptions = {
+                            //center: myLatlng,
+                            //zoom: 3,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        };
+
+                        var myLatlng = new google.maps.LatLng(mylat, mylong);
+                        var marker = new google.maps.Marker({
+                            position: myLatlng,
+                            map: $rootScope.map,
+                            title: models[i].name
+                        });
+
+                        gmarkers.push(marker);
+
+                        google.maps.event.addListener(marker, 'click', (function(info) {
+                            return function() {
+                                info.open($rootScope.map, this);
+                            }
+                        })(info));
+
+                    }
+                }, function(err) {
+                    console.log(err);
+                });
+            
+        }
+
+    }
+
+
+
+    $scope.$on('$ionicView.beforeEnter', function() {
+
+        $kinvey.DataStore.find('geo').then(function(locations) {
+            console.log(locations);
+            for (var i = 0; i < locations.length; i++) {
+                var mylat = parseInt(locations[i]._geoloc[0]);
+                var mylong = parseInt(locations[i]._geoloc[1]);
+                console.log(mylat + ", " + mylong);
+                var info = new google.maps.InfoWindow({
+                    content: '<b>Who:</b> ' + locations[i].name + '<br><b>Notes:</b> ' + locations[i].company.name
+                });
+
+                var mapOptions = {
+                
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                var myLatlng = new google.maps.LatLng(mylat, mylong);
+                var marker = new google.maps.Marker({
+                    position: myLatlng,
+                    map: $rootScope.map,
+                    title: locations[i].name
+                });
+                gmarkers.push(marker);
+                google.maps.event.addListener(marker, 'click', (function(info) {
+                    return function() {
+                        info.open($rootScope.map, this);
+                    }
+                })(info));
+
+            }
+
+        });
+    });
+
+
+    $scope.initialize = function() {
+        
+        console.log('initializing map');
+
+        var myLatlng = new google.maps.LatLng(39.8282109, -98.5795706);
+        //$scope.mybrand = mybrand;
+        var mapOptions = {
+            center: myLatlng,
+            zoom: 3,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        $rootScope.map = new google.maps.Map(document.getElementById("mymap"),
+            mapOptions);
+    }
+
+})
+
 
 .controller('BrandCtrl', function($scope, $kinvey) {
 
-   $scope.doRefreshBrand = function() {
-     console.log('refresh brand');
-     $kinvey.DataStore.find('brand').then(function(mybrand) {
+    $scope.doRefreshBrand = function() {
+        console.log('refresh brand');
+        $kinvey.DataStore.find('brand').then(function(mybrand) {
             console.log(mybrand);
             $scope.mybrand = mybrand;
         });
-      }
+    }
 
     $scope.$on('$ionicView.beforeEnter', function() {
         console.log('partner load view');
@@ -224,7 +421,7 @@ angular.module('starter.controllers', ['kinvey'])
             $scope.mybrand = brand;
         });
     });
-    
+
 })
 
 
@@ -288,50 +485,24 @@ angular.module('starter.controllers', ['kinvey'])
 })
 
 
-.controller('WeatherCtrl', function($scope, $ionicSlideBoxDelegate) {
 
-    $scope.myActiveSlide = 0;
-
-    $scope.directorClick = function() {
-        $scope.myActiveSlide = 1;
-        $ionicSlideBoxDelegate.slide(1);
-        console.log('director');
-        console.log($scope.myActiveSlide)
-    };
-
-    $scope.accidentClick = function() {
-        $scope.myActiveSlide = 2;
-        $ionicSlideBoxDelegate.slide(2);
-        console.log('accident');
-    };
-
-    $scope.homeClick = function() {
-        $scope.myActiveSlide = 0;
-        $ionicSlideBoxDelegate.slide(0);
-        console.log('home');
-    };
-
-    $scope.keyClick = function() {
-        $scope.myActiveSlide = 3;
-        $ionicSlideBoxDelegate.slide(3);
-        console.log('key');
-    };
-
-    console.log('tornado');
-})
-
-.controller('HomeCtrl', function($scope, $kinvey) {
+.controller('HomeCtrl', function($scope, $kinvey, $rootScope) {
     console.log('home');
+
+    navigator.geolocation.getCurrentPosition(function(loc) {
+                console.log('getting position');
+                var coord = [loc.coords.latitude, loc.coords.longitude];
+                console.log(coord);
+                $rootScope.current_loc = coord;
+        });
+
 
     $scope.$on('$ionicView.enter', function() {
         console.log('before entering home');
 
-        //var query = new Kinvey.Query();
-        //query.equalTo('_id', '5539149bbbc83fd84a015bb5');
-
         $kinvey.DataStore.find('brand').then(function(brand) {
-            console.log(brand[0].headerlabel);
-            $scope.headerlabel = brand[0].headerlabel;
+            //console.log(brand[0].headerlabel);
+            //$scope.headerlabel = brand[0].headerlabel;
         });
     });
 

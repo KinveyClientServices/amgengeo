@@ -6,11 +6,11 @@
 
   <label class="item item-input item-select">
     <div class="input-label">
-      Account
+      Planes
     </div>
     
-    <select id="chosenCompany" ng-model="selectValue" ng-change="searchme()">
-      <option ng-repeat="company in companies">{{company.companyname}}</option>
+    <select id="chosenPlane" ng-model="selectValue" ng-change="searchme()">
+      <option ng-repeat="plane in planes">{{plane.name}}</option>
      
     </select>
   </label>
@@ -34,19 +34,21 @@
         <h2>{{account.companyname}}</h2>
       </ion-item>
     </ion-list>-->
-<div class="list">
+<div class="list" ng-model="thisplane" ng-show="showme">
     <div class="list card">
-      <ion-item class="item-avatar" ng-repeat="account in accountlist" type="item-text-wrap">
+      <ion-item type="item-text-wrap">
         <!--<div class="item item-avatar">-->
-          <img src="{{account.logoicon}}"></img>
-          <h2>{{account.companyname}}</h2>
-          <p>{{account.numemployees}} employees</p>
-          <p>Opportunity Size: {{account.oppsize}}</p>
+          <center><img src="{{thisplane.planeimg}}" width="300"></img></center>
+          <h2>{{thisplane.name}}</h2>
+          <p>{{thisplane.capacity}}</p>
+          <p>{{thisplane.speed}}</p>
+          <p>{{thisplane.wingspan}}</p>
+          <!--<p>Desc: {{bike.desc}}</p>-->
        <!-- </div>-->
 
         <div class="item item-body">
           <p>
-            {{account.lastcallnotes}}
+            {{thisplane.propulsion}}
           </p>
         </div>
       </ion-item>

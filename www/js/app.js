@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'kinvey', 'starter.controllers'])
+angular.module('starter', ['ionic', 'kinvey', 'starter.controllers', 'ngCookies'])
 
 .run(function($ionicPlatform, $kinvey, $rootScope, $state) {
   $ionicPlatform.ready(function() {
@@ -20,10 +20,13 @@ angular.module('starter', ['ionic', 'kinvey', 'starter.controllers'])
       StatusBar.styleDefault();
     }
 
+//Kinvey.MICAPIVersion = 2;
+
     // Kinvey initialization starts
     var promise = $kinvey.init({
-      appKey : 'kid_-J2GLC_a5',
-      appSecret : '141c7b602f724af9b3d159eb6f546214',
+      appKey : 'kid_bk7pmxxJkb',
+      appSecret : '4aa9f98663aa4166a45c0ae074debaf8',
+      //MICAPIVersion : 2
     });
     promise.then(function() {
       // Kinvey initialization finished with success
@@ -100,22 +103,32 @@ angular.module('starter', ['ionic', 'kinvey', 'starter.controllers'])
     }
   })
 
-  .state('menu.partners', {
-    url: '/partners',
+  .state('menu.passengers', {
+    url: '/passengers',
     views: {
       'menuContent': {
-        templateUrl: 'templates/partners.html',
-        controller: 'PartnerCtrl'
+        templateUrl: 'templates/passengers.html',
+        controller: 'PassengerCtrl'
       }
     }
   })
 
-  .state('menu.brand', {
-    url: '/brand',
+  .state('menu.map', {
+    url: '/map',
     views: {
       'menuContent': {
-        templateUrl: 'templates/brand.html',
-        controller: 'BrandCtrl'
+        templateUrl: 'templates/map.html',
+        controller: 'MapCtrl'
+      }
+    }
+  })
+
+  .state('menu.places', {
+    url: '/places',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/places.html',
+        controller: 'PlacesCtrl'
       }
     }
   })
@@ -185,16 +198,16 @@ angular.module('starter', ['ionic', 'kinvey', 'starter.controllers'])
 
 
 
-  .state('menu.tabs.companies', {
-      url: '/companies',
+  .state('menu.tabs.planes', {
+      url: '/planes',
       views: {
-        'tab-companies': {
-          templateUrl: 'templates/companies.html',
-          controller: 'CompanyCtrl'
+        'tab-planes': {
+          templateUrl: 'templates/planes.html',
+          controller: 'PlaneCtrl'
         }
       }
     })
-    .state('tab.chat-detail', {
+    /*.state('tab.chat-detail', {
       url: '/chats/:chatId',
       views: {
         'tab-chats': {
@@ -202,7 +215,7 @@ angular.module('starter', ['ionic', 'kinvey', 'starter.controllers'])
           controller: 'ChatDetailCtrl'
         }
       }
-    })
+    })*/
 
   .state('menu.tabs.search', {
       url: '/search',
